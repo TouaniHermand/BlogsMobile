@@ -6,8 +6,13 @@ const blogReducer = (state, action) => {
   switch (action.type) {
     case "addBlogPost":
       const { blog } = action.payload;
-
       return [...state, blog];
+
+    case "editBlogPost":
+      const { blogEdit } = action.payload;
+      return state.map((blogPost) => {
+        return blogPost.id === blogEdit.id ? blogEdit : blogPost;
+      });
 
     case "deleteBlogPost":
       const { id } = action.payload;
@@ -22,9 +27,10 @@ const BlogProvider = ({ children }) => {
   const [blogPosts, dispatch] = useReducer(blogReducer, []);
   const [errors, setErrors] = useState("");
 
-  const addBlogPost = (blog) => {
+  const addBlogPost = (blog, callback) => {
     if (blog.title && blog.content && blog.id) {
       dispatch({ type: "addBlogPost", payload: { blog } });
+      callback();
     } else {
       setErrors("Veuillez remplir tous les champs");
     }
@@ -34,7 +40,10 @@ const BlogProvider = ({ children }) => {
     dispatch({ type: "deleteBlogPost", payload: { id } });
   };
 
-  const editBlogPost = (blog) => {};
+  const editBlogPost = (blogEdit, callback) => {
+    dispatch({ type: "editBlogPost", payload: { blogEdit } });
+    callback();
+  };
 
   return (
     <BlogContext.Provider
@@ -42,6 +51,7 @@ const BlogProvider = ({ children }) => {
         blogPosts: blogPosts,
         addBlogPost: addBlogPost,
         deleteBlogPost,
+        editBlogPost,
         errors,
       }}
     >

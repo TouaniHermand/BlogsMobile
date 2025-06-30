@@ -6,6 +6,7 @@ import ShowScreen from "./src/screens/ShowSreen";
 import CreateScreen from "./src/screens/CreateScreen";
 import { Text, View } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
+import UpdatedScreen from "./src/screens/UpdatedScreen";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
           />
           <Stack.Screen name="Show" component={ShowScreen} />
           <Stack.Screen name="Create" component={CreateScreen} />
+          <Stack.Screen name="Edit" component={UpdatedScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </BlogProvider>

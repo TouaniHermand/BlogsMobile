@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { BlogContext } from "../context/BlogContext";
+import { useNavigation } from "@react-navigation/native";
 
 const CreateScreen = () => {
   const [blogForm, setBlogForm] = useState({
@@ -9,6 +10,7 @@ const CreateScreen = () => {
     content: "",
   });
 
+  const navigation = useNavigation();
   const { addBlogPost, errors } = useContext(BlogContext);
   return (
     <View style={styles.containParent}>
@@ -33,7 +35,12 @@ const CreateScreen = () => {
           value={blogForm.content}
         />
       </View>
-      <Button title="Save" onPress={() => addBlogPost(blogForm)} />
+      <Button
+        title="Save"
+        onPress={() => {
+          addBlogPost(blogForm, () => navigation.navigate("Blogs"));
+        }}
+      />
     </View>
   );
 };

@@ -15,6 +15,7 @@ const ShowScreen = () => {
   return (
     <View style={styles.view}>
       <Text style={styles.text}>{blog.title}</Text>
+      <Text style={styles.text}>{blog.content}</Text>
       <Text>My Big Blog post today is about xyz</Text>
     </View>
   );

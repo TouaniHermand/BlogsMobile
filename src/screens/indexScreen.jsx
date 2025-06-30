@@ -15,8 +15,11 @@ import { useNavigation } from "@react-navigation/native";
 const IndexScreen = () => {
   const { blogPosts, addBlogPost, deleteBlogPost } = useContext(BlogContext);
 
+  const navigation = useNavigation();
+
   return (
     <View>
+      <Button title="Add Blog" onPress={() => navigation.navigate("Create")} />
       {blogPosts && (
         <FlatList
           data={blogPosts}
@@ -30,7 +33,12 @@ const IndexScreen = () => {
                   {item.title} - {item.id}
                 </Text>
                 <View style={styles.buttonContainer}>
-                  <EvilIcons name="pencil" style={styles.icon} color="black" />
+                  <EvilIcons
+                    name="pencil"
+                    style={styles.icon}
+                    color="black"
+                    onPress={() => navigation.navigate("Edit", { id: item.id })}
+                  />
                   <Feather
                     name="trash"
                     style={styles.icon}
