@@ -1,6 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import { useContext } from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { BlogContext } from "../context/BlogContext";
 
 const ShowScreen = () => {
@@ -10,14 +10,28 @@ const ShowScreen = () => {
 
   const { blogPosts } = useContext(BlogContext);
 
-  const blog = blogPosts.filter((blog) => parseInt(blog.id) === parseInt(id));
+  const blog = blogPosts.find((blog) => parseInt(blog.id) === parseInt(id));
 
   return (
-    <View>
-      <Text>{blog[0].title}</Text>
+    <View style={styles.view}>
+      <Text style={styles.text}>{blog.title}</Text>
       <Text>My Big Blog post today is about xyz</Text>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  text: {
+    fontSize: 30,
+    color: "black",
+    fontWeight: "bold",
+  },
+});
 
 export default ShowScreen;

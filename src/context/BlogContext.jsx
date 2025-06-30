@@ -1,17 +1,13 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 
 export const BlogContext = createContext();
 
 const blogReducer = (state, action) => {
   switch (action.type) {
     case "addBlogPost":
-      return [
-        ...state,
-        {
-          id: Math.floor(Math.random() * 9999),
-          title: `Blog Post ${state.length + 1}`,
-        },
-      ];
+      const { blog } = action.payload;
+
+      return [...state, blog];
 
     case "deleteBlogPost":
       const { id } = action.payload;
@@ -24,9 +20,14 @@ const blogReducer = (state, action) => {
 
 const BlogProvider = ({ children }) => {
   const [blogPosts, dispatch] = useReducer(blogReducer, []);
+  const [errors, setErrors] = useState("");
 
-  const addBlogPost = () => {
-    dispatch({ type: "addBlogPost" });
+  const addBlogPost = (blog) => {
+    if (blog.title && blog.content && blog.id) {
+      dispatch({ type: "addBlogPost", payload: { blog } });
+    } else {
+      setErrors("Veuillez remplir tous les champs");
+    }
   };
 
   const deleteBlogPost = (id) => {
@@ -37,7 +38,12 @@ const BlogProvider = ({ children }) => {
 
   return (
     <BlogContext.Provider
-      value={{ blogPosts: blogPosts, addBlogPost: addBlogPost, deleteBlogPost }}
+      value={{
+        blogPosts: blogPosts,
+        addBlogPost: addBlogPost,
+        deleteBlogPost,
+        errors,
+      }}
     >
       {children}
     </BlogContext.Provider>
