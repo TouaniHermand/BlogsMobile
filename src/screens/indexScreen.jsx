@@ -37,7 +37,9 @@ const IndexScreen = () => {
                     name="pencil"
                     style={styles.icon}
                     color="black"
-                    onPress={() => navigation.navigate("Edit", { id: item.id })}
+                    onPress={() =>
+                      navigation.navigate("Create", { id: item.id })
+                    }
                   />
                   <Feather
                     name="trash"
