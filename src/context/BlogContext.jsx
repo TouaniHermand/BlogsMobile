@@ -1,12 +1,12 @@
 import { createContext, useReducer, useState } from "react";
+import jsonServer from "../api/jsonServer";
 
 export const BlogContext = createContext();
 
 const blogReducer = (state, action) => {
   switch (action.type) {
-    case "addBlogPost":
-      const { blog } = action.payload;
-      return [...state, blog];
+    case "getBlogPosts":
+      return action.payload;
 
     case "editBlogPost":
       const { blogEdit } = action.payload;
@@ -27,12 +27,22 @@ const BlogProvider = ({ children }) => {
   const [blogPosts, dispatch] = useReducer(blogReducer, []);
   const [errors, setErrors] = useState("");
 
-  const addBlogPost = (blog, callback) => {
-    if (blog.title && blog.content && blog.id) {
-      dispatch({ type: "addBlogPost", payload: { blog } });
+  const getBlogPosts = async () => {
+    try {
+      const response = await jsonServer.get("/blogPosts");
+      dispatch({ type: "getBlogPosts", payload: response.data });
+    } catch (error) {
+      setErrors("Erreur lors du chargement des blogs");
+    }
+  };
+
+  const addBlogPost = async (blog, callback) => {
+    try {
+      await jsonServer.post("/blogPosts", blog);
       callback();
-    } else {
-      setErrors("Veuillez remplir tous les champs");
+      getBlogPosts();
+    } catch (err) {
+      setErrors("Erreur lors de l'ajout");
     }
   };
 
@@ -52,6 +62,7 @@ const BlogProvider = ({ children }) => {
         addBlogPost: addBlogPost,
         deleteBlogPost,
         editBlogPost,
+        getBlogPosts,
         errors,
       }}
     >

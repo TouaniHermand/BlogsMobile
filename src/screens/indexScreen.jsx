@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -13,7 +13,12 @@ import { EvilIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const IndexScreen = () => {
-  const { blogPosts, addBlogPost, deleteBlogPost } = useContext(BlogContext);
+  const { blogPosts, addBlogPost, deleteBlogPost, getBlogPosts } =
+    useContext(BlogContext);
+
+  useEffect(() => {
+    getBlogPosts();
+  }, []);
 
   const navigation = useNavigation();
 
